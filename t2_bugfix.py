@@ -3,7 +3,15 @@
 items = ["pen", "notebook", "bag"]
 prices = [20, 150, 1200]
 
-qty = list(map(int, input("Quantity of each item (e.g. 2,1,1): ").split(",")))
+try:
+    qty = list(map(int, input("Quantity of each item (e.g. 2,1,1): ").split(",")))
+
+    if len(qty) != len(items) or any(q < 0 for q in qty):
+        raise ValueError
+
+except ValueError:
+    print("Invalid input! Please enter quantities like 2,1,1")
+    exit()
 
 total = 0
 
