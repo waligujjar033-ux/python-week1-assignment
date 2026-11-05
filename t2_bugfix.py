@@ -12,11 +12,11 @@ for i in range(0, len(items)):  # Bug 1 0 sy start karna chahiye tha, 1 sy nahi
     print(items[i], "x", qty[i], "=", line)
     total += line
 
-if total > 500:
-    discount = total * 10 / 100
-
-elif total > 1000:
+if total > 1000:
     discount = total * 20 / 100
+
+elif total > 500:
+    discount = total * 10 / 100
 
 else:
     discount = 0
