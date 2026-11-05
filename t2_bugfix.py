@@ -7,7 +7,7 @@ qty = input("Quantity of each item (e.g. 2,1,1): ").split(",")
 
 total = 0
 
-for i in range(1, len(items)):
+for i in range(0, len(items)):  # Bug 1 0 sy start karna chahiye tha, 1 sy nahi
     line = prices[i] * qty[i]
     print(items[i], "x", qty[i], "=", line)
     total = line
