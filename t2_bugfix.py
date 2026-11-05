@@ -25,4 +25,4 @@ final = total - discount
 
 print("Total:", total)
 print("Discount:", discount)
-print("Pay: Rs " + final)
+print("Pay: Rs ", final)
