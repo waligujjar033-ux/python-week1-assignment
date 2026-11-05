@@ -3,7 +3,7 @@
 items = ["pen", "notebook", "bag"]
 prices = [20, 150, 1200]
 
-qty = input("Quantity of each item (e.g. 2,1,1): ").split(",")
+qty = list(map(int, input("Quantity of each item (e.g. 2,1,1): ").split(",")))
 
 total = 0
 
