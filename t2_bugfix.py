@@ -3,16 +3,32 @@
 items = ["pen", "notebook", "bag"]
 prices = [20, 150, 1200]
 
-try:
-    qty = list(map(int, input("Quantity of each item (e.g. 2,1,1): ").split(",")))
+# BUG-6: Input validation using Week 1 concepts
 
-    if len(qty) != len(items) or any(q < 0 for q in qty):
-        raise ValueError
+valid = False
 
-except ValueError:
-    print("Invalid input! Please enter quantities like 2,1,1")
-    exit()
+while not valid:
+    user_input = input("Quantity of each item (e.g. 2,1,1): ")
+    parts = user_input.split(",")
 
+    if len(parts) != len(items):
+        print("Invalid input! Please enter quantities like 2,1,1")
+        continue
+
+    qty = []
+    valid = True
+
+    for part in parts:
+        part = part.strip()
+
+        if part.isdigit():
+            qty.append(int(part))
+        else:
+            valid = False
+            break
+
+    if not valid:
+        print("Invalid input! Please enter quantities like 2,1,1")
 total = 0
 
 for i in range(0, len(items)):  # Bug 1 0 sy start karna chahiye tha, 1 sy nahi
