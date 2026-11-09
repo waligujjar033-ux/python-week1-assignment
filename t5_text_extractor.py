@@ -1,5 +1,4 @@
 import re
-from datetime import datetime
 
 # Step 1: Given text
 text = """
@@ -15,20 +14,26 @@ emails = re.findall(
     text
 )
 
-# Convert emails to lowercase and remove duplicates
-emails = list(dict.fromkeys(email.lower() for email in emails))
+unique_emails = []
+
+for email in emails:
+    email = email.lower()
+
+    if email not in unique_emails:
+        unique_emails.append(email)
 
 
 # Step 3: Extract phone numbers
 phones = re.findall(r'\b03\d{2}[- ]?\d{7}\b', text)
 
-# Remove duplicates and use same format
-phones = list(dict.fromkeys(
-    phone.replace(" ", "").replace("-", "")
-    for phone in phones
-))
+unique_phones = []
 
-phones = [phone[:4] + "-" + phone[4:] for phone in phones]
+for phone in phones:
+    phone = phone.replace("-", "").replace(" ", "")
+    phone = phone[:4] + "-" + phone[4:]
+
+    if phone not in unique_phones:
+        unique_phones.append(phone)
 
 
 # Step 4: Extract dates
@@ -41,30 +46,51 @@ valid_dates = []
 
 for date in dates:
 
-    try:
-        if "/" in date:
-            new_date = datetime.strptime(date, "%d/%m/%Y")
-        else:
-            new_date = datetime.strptime(date, "%Y-%m-%d")
+    if "/" in date:
+        day, month, year = date.split("/")
+    else:
+        year, month, day = date.split("-")
 
-        final_date = new_date.strftime("%Y-%m-%d")
+    day = int(day)
+    month = int(month)
+    year = int(year)
+
+    # Check leap year
+    leap = False
+
+    if year % 400 == 0 or (year % 4 == 0 and year % 100 != 0):
+        leap = True
+
+    # Find maximum days in month
+    max_days = 31
+
+    if month == 4 or month == 6 or month == 9 or month == 11:
+        max_days = 30
+
+    if month == 2:
+        if leap:
+            max_days = 29
+        else:
+            max_days = 28
+
+    # Check valid date
+    if year >= 1 and month >= 1 and month <= 12 and day >= 1 and day <= max_days:
+
+        final_date = f"{year:04d}-{month:02d}-{day:02d}"
 
         if final_date not in valid_dates:
             valid_dates.append(final_date)
 
-    except ValueError:
-        continue
 
-
-# Step 5: Print final report
+# Step 5: Print report
 print("===== CONTACT EXTRACTOR REPORT =====")
 
-print(f"\nEmails ({len(emails)}):")
-for email in emails:
+print(f"\nEmails ({len(unique_emails)}):")
+for email in unique_emails:
     print(email)
 
-print(f"\nPhones ({len(phones)}):")
-for phone in phones:
+print(f"\nPhones ({len(unique_phones)}):")
+for phone in unique_phones:
     print(phone)
 
 print(f"\nDates ({len(valid_dates)}):")
